@@ -105,12 +105,11 @@ sub HELP_MESSAGE
         --help      shows this message
         --version   shows version information
 
-        USAGE: $0 -U http://my.url.com -d sample.data
+        USAGE: $0 -U http://my.url.com [-d sample.data]
 
         -U          URL to retrieve (http or https)
-        -d          absolute path to data file containing hash to find with JSON response
-        -t          Timeout in seconds to wait for the URL to load. If the page fails to load, 
-                    $plugin_name will exit with UNKNOWN state (default 60)
+        -d          absolute path to data file containing hash to find with JSON response (optional)
+        -t          Timeout in seconds to wait for the URL to load (default 60)
 
 EOHELP
 ;

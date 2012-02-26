@@ -7,6 +7,5 @@ Optionally verify content is found using data file.
 USAGE: check_http_json.pl -U http://my.url.com -d sample.data
 
 -U          URL to retrieve (http or https)
--d          absolute path to data file containing hash to find with JSON response
--t          Timeout in seconds to wait for the URL to load. If the page fails to load, 
-            Nagios check_http_json will exit with UNKNOWN state (default 60)
+-d          absolute path to data file containing hash to find with JSON response (optional)
+-t          Timeout in seconds to wait for the URL to load. If the page fails to load, will exit with UNKNOWN state (default 60)
