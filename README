@@ -1,0 +1,12 @@
+Retrieve an http/s url and checks its application type is application/json and the response content decodes properly into JSON.  
+Optionally verify content is found using data file.
+
+--help      shows this message
+--version   shows version information
+
+USAGE: check_http_json.pl -U http://my.url.com -d sample.data
+
+-U          URL to retrieve (http or https)
+-d          absolute path to data file containing hash to find with JSON response
+-t          Timeout in seconds to wait for the URL to load. If the page fails to load, 
+            Nagios check_http_json will exit with UNKNOWN state (default 60)
