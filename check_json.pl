@@ -59,6 +59,7 @@ eval {
   exit EXIT_CRITICAL;
 };
 
+$status = EXIT_OK;
 
 if ($opts{d}) {
 
