@@ -7,7 +7,7 @@ use LWP::UserAgent;
 use JSON 'decode_json';
 
 my $plugin_name = "Nagios check_http_json";
-my $VERSION = "1.00";
+my $VERSION = "1.01";
 
 # getopt module config
 $Getopt::Std::STANDARD_HELP_VERSION = 1;
@@ -40,7 +40,7 @@ $ua->timeout($opts{t});
 
 my $response = $ua->get($opts{U});
 
-if ( $response->header("content-type") ne 'application/json' )
+if ( index($response->header("content-type"), 'application/json') == -1 )
 {
   print "Expected content-type to be application/json, got ", $response->header("content-type");
   exit EXIT_CRITICAL;
@@ -59,6 +59,7 @@ eval {
   exit EXIT_CRITICAL;
 };
 
+$status = EXIT_OK;
 
 if ($opts{d}) {
 
