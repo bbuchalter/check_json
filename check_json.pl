@@ -52,50 +52,50 @@ my $json_response;
 eval {
 
   $json_response = decode_json($response->content);
-  print "JSON repsonse decoded successfully."
+  print "JSON repsonse decoded successfully.";
+
+  $status = EXIT_OK;
+
+  if ($opts{d}) {
+
+    if ( -e $opts{d}) {
+
+      my $hash_import = do $opts{d};
+      
+      my %attr_check = %{$hash_import};
+
+      my @errors;
+
+      for my $key (sort keys %attr_check) {
+          for my $attr (sort keys %{$attr_check{$key}}) {
+              my $have = $json_response->{products}{$key}{now}{$attr};
+              my $expect = $attr_check{$key}{$attr};
+              push @errors, "For key $key, attribute $attr, expected '$expect', but got '$have'"
+                  unless $have eq $expect;
+          }
+      }
+
+      if (@errors) {
+          print "Errors:\n", map { "$_\n" } @errors;
+          $status = EXIT_CRITICAL;
+      }
+      else {
+          print "Found expected content.";
+          $status = EXIT_OK;
+      } 
+    }
+    else {
+      print "Unable to find data file $opts{d}";
+      $status = EXIT_UNKNOWN;
+    }
+  }
+
+  exit $status;
 
 } or do {
   print "Unable to decode JSON, invalid response?";
   exit EXIT_CRITICAL;
 };
-
-$status = EXIT_OK;
-
-if ($opts{d}) {
-
-  if ( -e $opts{d}) {
-
-    my $hash_import = do $opts{d};
-    
-    my %attr_check = %{$hash_import};
-
-    my @errors;
-
-    for my $key (sort keys %attr_check) {
-        for my $attr (sort keys %{$attr_check{$key}}) {
-            my $have = $json_response->{products}{$key}{now}{$attr};
-            my $expect = $attr_check{$key}{$attr};
-            push @errors, "For key $key, attribute $attr, expected '$expect', but got '$have'"
-                unless $have eq $expect;
-        }
-    }
-
-    if (@errors) {
-        print "Errors:\n", map { "$_\n" } @errors;
-        $status = EXIT_CRITICAL;
-    }
-    else {
-        print "Found expected content.";
-        $status = EXIT_OK;
-    } 
-  }
-  else {
-    print "Unable to find data file $opts{d}";
-    $status = EXIT_UNKNOWN;
-  }
-}
-
-exit $status;
 
 sub HELP_MESSAGE 
 {
